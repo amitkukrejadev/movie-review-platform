@@ -9,3 +9,14 @@ server.js.bad
 package.json.bak
 .env
 frontend/.env
+# local envs & build
+*.env
+frontend/.env
+backend/.env
+node_modules/
+dist/
+build/
+.vscode/
+.DS_Store
+server.js.bad
+tmp-backup/
