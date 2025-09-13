@@ -3,31 +3,35 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function MovieCard({ movie }) {
+  const {
+    id,
+    title,
+    posterUrl = "/posters/placeholder-300x450.png",
+    releaseYear,
+    genre = [],
+  } = movie;
+
   return (
-    <Link to={`/movie/${movie._id}`} className="block">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+    <Link
+      to={`/movies/${id}`}
+      className="block rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-150 bg-white"
+      aria-label={`Open ${title}`}
+    >
+      <div className="aspect-[2/3] w-full bg-gray-100 overflow-hidden rounded-t">
         <img
-          src={
-            movie.posterUrl
-              ? `https://image.tmdb.org/t/p/w500${movie.posterUrl}`
-              : "/posters/placeholder-300x450.png"
-          }
-          alt={`Poster for ${movie.title}`}
-          onError={(e) => {
-            e.target.src = "/posters/placeholder-300x450.png";
-          }}
-          className="w-full h-auto object-cover aspect-[2/3]"
+          src={posterUrl}
+          alt={title}
+          className="w-full h-full object-cover"
         />
-        <div className="p-4">
-          <h3 className="text-lg font-semibold text-gray-900 truncate">
-            {movie.title}
-          </h3>
-          <p className="text-sm text-gray-600">
-            {movie.year || "Unknown year"}
-          </p>
-          <p className="text-sm text-gray-500">
-            {movie.numReviews || 0} reviews
-          </p>
+      </div>
+
+      <div className="p-3">
+        <h3 className="text-lg md:text-xl font-semibold leading-tight">
+          {title}
+        </h3>
+        <div className="text-sm text-slate-500 mt-1">
+          {releaseYear ? releaseYear : "—"} ·{" "}
+          {(Array.isArray(genre) ? genre.slice(0, 2) : []).join(", ")}
         </div>
       </div>
     </Link>
