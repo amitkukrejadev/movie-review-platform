@@ -42,10 +42,15 @@ const movies = [
 ];
 
 async function seed() {
-  await Movie.deleteMany({});
-  await Movie.insertMany(movies);
-  console.log("Database seeded");
-  mongoose.connection.close();
+  try {
+    await Movie.deleteMany({});
+    await Movie.insertMany(movies);
+    console.log("Database seeded");
+  } catch (err) {
+    console.error("Seeding error:", err);
+  } finally {
+    mongoose.connection.close();
+  }
 }
 
 seed();
