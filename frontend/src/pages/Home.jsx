@@ -1,6 +1,6 @@
 // frontend/src/pages/Home.jsx
 import React, { useEffect, useState } from "react";
-import { useMovies } from "../context/MovieContext"; // Fixed import path
+import { useMovies } from "../context/MovieContext";
 import MovieCard from "../components/MovieCard";
 
 export default function Home() {
@@ -8,38 +8,35 @@ export default function Home() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    loadPage(1).catch((err) => {
-      setError(err?.message || "Failed to load movies");
-      console.error("loadPage(1) failed:", err?.message || err);
-    });
-  }, [loadPage]);
+    async function fetch() {
+      try {
+        await loadPage(page);
+      } catch (err) {
+        setError(err.message || "Failed to load movies");
+      }
+    }
+    fetch();
+  }, [page, loadPage]);
 
   const movies = moviesByPage[page] || [];
-  console.log({ moviesByPage, page, loading, movies, error }); // Debug state
-
-  if (error) return <p className="text-red-600">{error}</p>;
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">Movies</h2>
-      {loading && movies.length === 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className="bg-white rounded shadow p-4 animate-pulse min-h-[220px]"
-            />
-          ))}
-        </div>
-      ) : movies.length === 0 ? (
-        <p>No movies found.</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {movies.map((m) => (
-            <MovieCard key={m._id} movie={m} />
-          ))}
-        </div>
+    <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-gray-900">
+        Movie Reviews
+      </h1>
+      {loading && (
+        <p className="text-gray-500 text-center">Loading movies...</p>
       )}
+      {error && <p className="text-red-600 text-center">{error}</p>}
+      {!loading && !error && !movies.length && (
+        <p className="text-gray-500 text-center">No movies found.</p>
+      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+        {movies.map((movie) => (
+          <MovieCard key={movie._id} movie={movie} />
+        ))}
+      </div>
     </div>
   );
 }
