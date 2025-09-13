@@ -8,3 +8,4 @@ tmp-backup/
 server.js.bad
 package.json.bak
 .env
+frontend/.env
