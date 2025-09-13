@@ -1,26 +1,27 @@
+# Node / dependencies
 node_modules/
-.env
-.DS_Store
-.vscode/
-dist/
-build/
-tmp-backup/
-server.js.bad
-package.json.bak
-.env
-frontend/.env
-# local envs & build
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment files
 *.env
 frontend/.env
 backend/.env
-node_modules/
+
+# Build outputs
 dist/
 build/
+
+# IDE / OS files
 .vscode/
 .DS_Store
-server.js.bad
+
+# Temporary / backup files
+*.bak
+*.bad
 tmp-backup/
+
+# Project-specific ignores
+server.js.bad
 frontend/public/posters/
-frontend/.env
-frontend/.env
-backend/.env
