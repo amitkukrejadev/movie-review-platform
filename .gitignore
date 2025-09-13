@@ -22,3 +22,5 @@ server.js.bad
 tmp-backup/
 frontend/public/posters/
 frontend/.env
+frontend/.env
+backend/.env
