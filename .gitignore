@@ -20,3 +20,4 @@ build/
 .DS_Store
 server.js.bad
 tmp-backup/
+frontend/public/posters/
