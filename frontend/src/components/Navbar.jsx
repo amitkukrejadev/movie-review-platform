@@ -6,14 +6,18 @@ export default function Navbar() {
   return (
     <nav className="bg-white shadow p-4">
       <div className="container mx-auto flex items-center justify-between">
-        <Link to="/" className="text-xl font-bold">
+        <Link
+          to="/"
+          className="text-xl font-bold"
+          aria-label="Home - Movie Reviews"
+        >
           Movie Reviews
         </Link>
         <div className="space-x-3">
-          <Link to="/login" className="text-sm">
+          <Link to="/login" className="text-sm" aria-label="Login">
             Login
           </Link>
-          <Link to="/register" className="text-sm">
+          <Link to="/register" className="text-sm" aria-label="Register">
             Register
           </Link>
         </div>
