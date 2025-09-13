@@ -1,7 +1,6 @@
 // frontend/src/context/AuthProvider.jsx
-import React, { createContext, useState, useEffect, useCallback } from "react";
-
-export const AuthContext = createContext();
+import React, { useState, useEffect, useCallback } from "react";
+import AuthContext from "./AuthContext";
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -12,7 +11,7 @@ export default function AuthProvider({ children }) {
       const raw = localStorage.getItem("mrv_user");
       if (raw) setUser(JSON.parse(raw));
     } catch {
-      // Ignore parse errors
+      // ignore
     } finally {
       setLoading(false);
     }

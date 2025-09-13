@@ -1,70 +1,33 @@
 // frontend/src/context/MovieContext.jsx
-import React, { createContext, useContext, useState, useCallback } from "react";
-import { fetchMovies, fetchMovieById, fetchTMDBPoster } from "../utils/api";
+import React, { createContext } from "react";
+import { useMovies } from "./useMovies"; // your existing hook
 
-export const MovieContext = createContext();
+// default context shape
+const MovieContext = createContext({
+  movies: [],
+  loading: false,
+  error: null,
+  page: 1,
+  totalPages: 1,
+  loadPage: () => {},
+  search: () => Promise.resolve([]),
+});
 
 export function MovieProvider({ children }) {
-  const [moviesByPage, setMoviesByPage] = useState({});
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  // You can log here to verify it's running
+  const { movies, loading, error, page, totalPages, loadPage, search } =
+    useMovies({ initialPage: 1, limit: 24 });
 
-  const getMovie = useCallback(
-    (id) =>
-      Object.values(moviesByPage)
-        .flat()
-        .find((m) => m._id === id),
-    [moviesByPage]
-  );
-
-  const fetchMovie = useCallback(async (id) => {
-    setLoading(true);
-    try {
-      const movie = await fetchMovieById(id);
-      const posterUrl = await fetchTMDBPoster(movie.title, movie.year);
-      return { ...movie, posterUrl };
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  const loadPage = useCallback(
-    async (pageNum) => {
-      if (moviesByPage[pageNum]) return;
-      setLoading(true);
-      try {
-        const { movies } = await fetchMovies(pageNum);
-        const moviesWithPosters = await Promise.all(
-          movies.map(async (movie) => ({
-            ...movie,
-            posterUrl: await fetchTMDBPoster(movie.title, movie.year),
-          }))
-        );
-        setMoviesByPage((prev) => ({ ...prev, [pageNum]: moviesWithPosters }));
-      } finally {
-        setLoading(false);
-      }
-    },
-    [moviesByPage]
-  );
+  // small debug - remove after confirmed working
+  // console.log("MovieProvider: movies", movies?.length, "loading", loading, "err", error);
 
   return (
     <MovieContext.Provider
-      value={{
-        moviesByPage,
-        page,
-        setPage,
-        loading,
-        loadPage,
-        getMovie,
-        fetchMovie,
-      }}
+      value={{ movies, loading, error, page, totalPages, loadPage, search }}
     >
       {children}
     </MovieContext.Provider>
   );
 }
 
-export function useMovies() {
-  return useContext(MovieContext);
-}
+export default MovieContext;
