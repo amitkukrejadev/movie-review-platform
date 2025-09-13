@@ -1,0 +1,9 @@
+node_modules/
+.env
+.DS_Store
+.vscode/
+dist/
+build/
+tmp-backup/
+server.js.bad
+package.json.bak
