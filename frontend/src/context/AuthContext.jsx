@@ -1,10 +1,31 @@
-import { createContext } from "react";
+// frontend/src/context/AuthContext.jsx
+import React, { createContext, useState } from "react";
 
-/**
- * AuthContext
- * Single-file that only exports the context object to avoid
- * react-refresh/only-export-components problems.
- */
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
-export default AuthContext;
+export default function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+
+  const login = async (email, password) => {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) throw new Error("Login failed");
+    const data = await res.json();
+    setUser(data.user);
+    localStorage.setItem("token", data.token);
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("token");
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}

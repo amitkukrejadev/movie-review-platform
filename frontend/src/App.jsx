@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 export default function App() {
+  console.log("App.jsx rendering"); // Debug to confirm App renders
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/movies/:id" element={<MovieDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="*" element={<p>404: Page Not Found</p>} />
         </Routes>
       </main>
     </div>
