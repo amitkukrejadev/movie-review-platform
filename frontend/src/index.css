@@ -1,7 +1,1 @@
-/* frontend/src/index.css */
-@import "tailwindcss/preflight";
 @import "tailwindcss";
-
-body {
-  font-family: Arial, sans-serif;
-}
