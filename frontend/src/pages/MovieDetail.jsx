@@ -1,85 +1,79 @@
-// frontend/src/pages/MovieDetail.jsx
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useMovies } from "../context/useMovies";
+import { fetchMovieById } from "../utils/api";
 
+/**
+ * MovieDetail
+ * Handles both API shapes: either { movie: {...} } or direct movie object.
+ */
 export default function MovieDetail() {
   const { id } = useParams();
-  const { getMovie, fetchMovie, loading, error } = useMovies();
-  const [movie, setMovie] = useState(() => getMovie(id));
+  const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState(null);
 
   useEffect(() => {
     let mounted = true;
+    setLoading(true);
+    setErr(null);
 
-    async function ensure() {
-      const cached = getMovie(id);
-      if (cached) {
-        if (mounted) setMovie(cached);
-        return;
-      }
-      const fetched = await fetchMovie(id);
-      if (mounted) setMovie(fetched);
-    }
-
-    ensure().catch(console.error);
+    fetchMovieById(id)
+      .then((data) => {
+        if (!mounted) return;
+        // Normalize shape: accept { movie } or raw object
+        const resolved =
+          data && typeof data === "object"
+            ? "movie" in data && data.movie
+              ? data.movie
+              : data
+            : null;
+        setMovie(resolved);
+      })
+      .catch((e) => {
+        if (!mounted) return;
+        setErr(e?.message || String(e));
+      })
+      .finally(() => {
+        if (!mounted) return;
+        setLoading(false);
+      });
 
     return () => {
       mounted = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  if (loading && !movie) return <p>Loading movie...</p>;
-  if (error && !movie)
-    return (
-      <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded">
-        <strong>Error:</strong> {error}
-      </div>
-    );
-
-  if (!movie) return <p>Movie not found.</p>;
+  if (loading) return <p>Loading movie...</p>;
+  if (err) return <p className="text-red-600">Error: {err}</p>;
+  if (!movie) return <p>No movie found.</p>;
 
   return (
-    <div className="bg-white p-6 rounded shadow space-y-4">
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="w-full md:w-48 flex-shrink-0">
+    <div className="bg-white p-6 rounded shadow max-w-3xl mx-auto">
+      <div className="flex gap-6">
+        <div className="w-40 flex-shrink-0">
           <img
-            src={movie.posterUrl}
-            alt={`Poster for ${movie.title}`}
-            className="w-full h-auto rounded shadow"
+            src={movie.posterUrl || "https://via.placeholder.com/300x450?text=No+Poster"}
+            alt={`Poster of ${movie.title}`}
+            className="w-full h-auto rounded"
+            onError={(e) => {
+              if (e?.target?.src) e.target.src = "https://via.placeholder.com/300x450?text=No+Poster";
+            }}
           />
         </div>
-
-        <div className="flex-1">
-          <h1 className="text-2xl font-bold">{movie.title}</h1>
-          <p className="text-sm text-gray-500">
-            {movie.genre} • {movie.year} • Directed by {movie.director}
+        <div>
+          <h1 className="text-2xl font-bold mb-2">{movie.title}</h1>
+          <p className="text-gray-600 mb-4">{movie.description}</p>
+          <p className="text-sm text-gray-500 mb-2">
+            {movie.genre} • {movie.year}
           </p>
-
-          <div className="mt-4 text-gray-700">{movie.description}</div>
-
-          <div className="mt-4">
-            <strong>Cast:</strong>
-            <ul className="list-disc list-inside">
-              {(movie.cast || []).map((c, i) => (
-                <li key={i}>
-                  {c.name}{" "}
-                  {c.role ? (
-                    <span className="text-sm text-gray-500">as {c.role}</span>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <p className="text-sm text-gray-500">Director: {movie.director || "Unknown"}</p>
         </div>
       </div>
 
-      {/* placeholder: reviews and add review form */}
-      <div>
-        <h2 className="text-lg font-semibold">Reviews</h2>
-        <p className="text-sm text-gray-500">
-          (Reviews and review form will be shown here.)
-        </p>
+      {/* placeholder for reviews/form */}
+      <div className="mt-6">
+        <h2 className="text-xl font-semibold mb-2">Reviews</h2>
+        <p className="text-gray-500">Reviews will appear here (coming soon).</p>
       </div>
     </div>
   );
