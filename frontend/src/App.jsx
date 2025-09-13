@@ -1,21 +1,24 @@
-// src/App.jsx
+// frontend/src/App.jsx
 import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import MovieDetail from "./pages/MovieDetail";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="max-w-xl w-full p-8 bg-white rounded-2xl shadow-lg">
-        <h1 className="text-3xl font-extrabold mb-2">
-          Tailwind test — Movie Reviews
-        </h1>
-        <p className="text-gray-600 mb-4">
-          If this is styled, Tailwind is working ✅
-        </p>
-        <p className="text-gray-400">Lorem ipsum dolor sit amet.</p>
-        <button className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">
-          Tailwind Button
-        </button>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      <main className="container mx-auto p-4">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/movies/:id" element={<MovieDetail />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </main>
     </div>
   );
 }
