@@ -1,31 +1,14 @@
 // backend/middleware/auth.js
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+import jwt from "jsonwebtoken";
 
-const protect = async (req, res, next) => {
-  let token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    try {
-      token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.id).select("-password");
-      return next();
-    } catch (err) {
-      console.error("Auth error", err.message);
-      return res.status(401).json({ message: "Not authorized, token failed" });
-    }
+export default function auth(req, res, next) {
+  const token = req.header("Authorization")?.replace("Bearer ", "");
+  if (!token) return res.status(401).json({ message: "No token provided" });
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    res.status(401).json({ message: "Invalid token" });
   }
-  return res.status(401).json({ message: "Not authorized, no token" });
-};
-
-const admin = (req, res, next) => {
-  if (req.user && req.user.isAdmin) {
-    return next();
-  }
-  return res.status(403).json({ message: "Require admin role" });
-};
-
-module.exports = { protect, admin };
+}

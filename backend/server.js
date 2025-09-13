@@ -1,52 +1,27 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('./config/db');
+// backend/server.js
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
+import authRoutes from "./routes/auth.js";
+import movieRoutes from "./routes/movies.js";
+import userRoutes from "./routes/users.js";
+
+dotenv.config();
+connectDB();
 
 const app = express();
-
-// Global handlers (visible during development)
-process.on('uncaughtException', (err) => {
-  console.error('UNCAUGHT EXCEPTION', err && err.stack ? err.stack : err);
-  process.exit(1);
-});
-process.on('unhandledRejection', (err) => {
-  console.error('UNHANDLED REJECTION', err && err.stack ? err.stack : err);
-});
-
-// middleware
-app.use(cors());
+app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 
-// routes (mounted AFTER DB connect below)
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/movies', require('./routes/movies'));
-app.use('/api/users', require('./routes/users'));
+app.use("/auth", authRoutes);
+app.use("/movies", movieRoutes);
+app.use("/users", userRoutes);
 
-// health
-app.get('/', (req, res) => res.json({ ok: true }));
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Server error" });
+});
 
-const PORT = process.env.PORT || 5000;
-
-const start = async () => {
-  try {
-    await connectDB();
-    console.log('Starting HTTP server after DB connected');
-    const server = app.listen(PORT, () =>
-      console.log(`Server running on port ${PORT}`)
-    );
-
-    // graceful shutdown handlers
-    const shutdown = (sig) => {
-      console.log(`Received ${sig}. Shutting down...`);
-      server.close(() => process.exit(0));
-    };
-    process.on('SIGINT', () => shutdown('SIGINT'));
-    process.on('SIGTERM', () => shutdown('SIGTERM'));
-  } catch (err) {
-    console.error('Failed to start server', err && err.stack ? err.stack : err);
-    process.exit(1);
-  }
-};
-
-start();
+const PORT = process.env.PORT || 5001;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
