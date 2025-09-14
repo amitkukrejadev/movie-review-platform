@@ -10,6 +10,12 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import TestPage from "./pages/TestPage";
 import SubmitPage from "./pages/SubmitPage";
+import About from "./pages/About";
+import Company from "./pages/Company";
+import Careers from "./pages/Careers";
+import Support from "./pages/Support";
+import Privacy from "./pages/Privacy";
+import Contact from "./pages/Contact";
 
 export default function App() {
   return (
@@ -21,6 +27,11 @@ export default function App() {
           <Route path="/movies" element={<MoviesPage />} />
           <Route path="/movies/:id" element={<MovieDetail />} />
           <Route path="/submit" element={<SubmitPage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/company" element={<Company />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="/test" element={<TestPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
