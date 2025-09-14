@@ -42,7 +42,6 @@ export default function Home() {
       </header>
 
       {/* controls row (kept simple; you can wire search/filters here) */}  
-
       {loading ? (
         <div className="py-20 text-center text-slate-500">Loading movies…</div>
       ) : error ? (
