@@ -31,9 +31,9 @@ export default function Navbar() {
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-30">
-      <div className="container mx-auto px-4 py-3 flex items-center gap-4">
+      <div className="container mx-auto px-4 py-3 flex items-center gap-4 max-w-7xl">
         {/* Mobile: left search icon */}
-        <div className="flex items-center md:hidden w-8">
+        <div className="flex items-center md:hidden">
           <button
             onClick={() => setSearchOpen((s) => !s)}
             aria-label="Open search"
@@ -58,62 +58,66 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Left area: logo + nav (desktop) */}
-        <div className="flex items-center gap-4 flex-1">
-          <Link to="/" className="inline-flex items-center gap-3">
+        {/* Left area: logo + nav */}
+        <div className="flex items-center gap-4 flex-1 min-w-0 justify-center md:justify-start">
+          {" "}
+          <Link to="/" className="inline-flex items-center gap-3 flex-shrink-0">
             <div className="w-10 h-10 flex items-center justify-center rounded-md bg-blue-600 text-white font-bold text-lg">
               MR
             </div>
-            <span className="hidden md:inline-block text-2xl font-semibold">
+            <span className="hidden md:inline-block text-2xl font-semibold whitespace-nowrap">
               Movie Reviews
             </span>
           </Link>
-
-          {/* desktop nav immediately to right of logo; added left margin to separate logo & links */}
-          <nav className="hidden md:flex md:items-center md:gap-6 ml-6">
-            <Link
-              to="/"
-              className="text-base md:text-lg font-medium px-3 py-1 hover:text-blue-600"
-            >
-              Home
-            </Link>
-            <Link
-              to="/movies"
-              className="text-base md:text-lg font-medium px-3 py-1 hover:text-blue-600"
-            >
-              Movies
-            </Link>
-            <Link
-              to="/submit"
-              className="text-base md:text-lg font-medium px-3 py-1 hover:text-blue-600"
-            >
-              Request
-            </Link>
-            <Link
-              to="/contact"
-              className="text-base md:text-lg font-medium px-3 py-1 hover:text-blue-600"
-            >
-              Contact
-            </Link>
-            <Link
-              to="/about"
-              className="text-base md:text-lg font-medium px-3 py-1 hover:text-blue-600"
-            >
-              About
-            </Link>
+          {/* desktop nav: reduce gap so more links fit; allow truncation */}
+          <nav className="hidden md:flex md:items-center md:gap-4 ml-6 overflow-hidden">
+            <div className="flex items-center gap-4 min-w-0">
+              <Link
+                to="/"
+                className="text-base md:text-lg font-medium px-3 py-1 hover:text-blue-600 truncate"
+              >
+                Home
+              </Link>
+              <Link
+                to="/movies"
+                className="text-base md:text-lg font-medium px-3 py-1 hover:text-blue-600 truncate"
+              >
+                Movies
+              </Link>
+              <Link
+                to="/submit"
+                className="text-base md:text-lg font-medium px-3 py-1 hover:text-blue-600 truncate"
+              >
+                Request
+              </Link>
+              <Link
+                to="/contact"
+                className="text-base md:text-lg font-medium px-3 py-1 hover:text-blue-600 truncate"
+              >
+                Contact
+              </Link>
+              <Link
+                to="/about"
+                className="text-base md:text-lg font-medium px-3 py-1 hover:text-blue-600 truncate"
+              >
+                About
+              </Link>
+            </div>
           </nav>
         </div>
 
-        {/* Desktop: search + auth on the right */}
-        <div className="hidden md:flex md:items-center md:gap-4">
+        {/* Desktop: search + auth on the right
+            NOTE: hidden on md and only shown on lg+ to preserve space on tablets */}
+        <div className="hidden lg:flex lg:items-center lg:gap-4 flex-none">
           <form onSubmit={onSearchSubmit} className="flex">
             <input
               type="search"
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="Search movies"
-              className="w-72 text-sm md:text-base px-3 py-2 rounded-md border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
               aria-label="Search movies"
+              className="text-sm md:text-base px-3 py-2 rounded-md border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-300
+                         max-w-[10rem] md:max-w-[18rem] lg:max-w-[24rem] w-full"
             />
           </form>
 
@@ -159,7 +163,7 @@ export default function Navbar() {
 
       {/* Mobile search overlay */}
       {searchOpen && (
-        <div className="md:hidden bg-white border-t">
+        <div className="md:hidden bg-white border-t z-40">
           <div className="container mx-auto px-4 py-3">
             <form onSubmit={onSearchSubmit} className="flex items-center gap-2">
               <input
@@ -186,4 +190,3 @@ export default function Navbar() {
     </header>
   );
 }
-  
