@@ -2,6 +2,18 @@
 import dotenv from "dotenv";
 dotenv.config(); // MUST run before other imports that read process.env
 
+import path from "path";
+import { fileURLToPath } from "url";
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+
+import movieRoutes from "./routes/movies.js";
+
+// Needed for __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 console.log("ENV debug — cwd:", process.cwd());
 console.log(
   "ENV debug — TMDB_KEY present?",
@@ -9,12 +21,6 @@ console.log(
   "masked:",
   process.env.TMDB_KEY ? process.env.TMDB_KEY.slice(0, 6) + "..." : "(none)"
 );
-
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
-// ... other imports
-import movieRoutes from "./routes/movies.js";
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -25,14 +31,29 @@ const MONGO =
   "mongodb://127.0.0.1:27017/moviesdb";
 
 // middleware
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 
-// routes
+// API routes
 app.use("/movies", movieRoutes);
 
-// basic health
-app.get("/", (req, res) => res.json({ ok: true }));
+// health check
+app.get("/health", (req, res) => res.json({ ok: true }));
+
+// ✅ serve frontend build (for Render deploy)
+const frontendDist = path.join(__dirname, "..", "frontend", "dist");
+app.use(express.static(frontendDist));
+app.get("*", (req, res, next) => {
+  // if API route, skip to next
+  if (req.path.startsWith("/movies") || req.path.startsWith("/api"))
+    return next();
+  res.sendFile(path.join(frontendDist, "index.html"));
+});
 
 // connect + listen
 mongoose
