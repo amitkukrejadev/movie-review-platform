@@ -21,7 +21,8 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Navbar />
-      <main className="container mx-auto p-4 flex-grow">
+      {/* wider centered content area; adjust max-w-7xl if you want even wider */}
+      <main className="w-full max-w-7xl mx-auto p-6 flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/movies" element={<MoviesPage />} />

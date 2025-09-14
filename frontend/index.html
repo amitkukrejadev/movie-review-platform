@@ -1,13 +1,73 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- Primary metadata -->
+    <title>Movie Reviews | Amit Kukreja</title>
+    <meta name="description" content="Movie Reviews — discover, review and share movie opinions. Built by Amit Kukreja." />
+    <meta name="author" content="Amit Kukreja" />
+    <meta name="keywords" content="movies, reviews, film reviews, movie database, Amit Kukreja" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://movie-review-platform-64a3.onrender.com/" />
+
+    <!-- Favicons (put files in /public) -->
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Theme / tile colors -->
+    <meta name="theme-color" content="#0ea5e9" />
+    <meta name="msapplication-TileColor" content="#0ea5e9" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:site_name" content="Movie Reviews" />
+    <meta property="og:title" content="Movie Reviews | Amit Kukreja" />
+    <meta property="og:description" content="Discover, review and share movies. Built by Amit Kukreja." />
+    <meta property="og:url" content="https://movie-review-platform-64a3.onrender.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/android-chrome-512x512.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@amitkukrejadev" />
+    <meta name="twitter:title" content="Movie Reviews | Amit Kukreja" />
+    <meta name="twitter:description" content="Discover, review and share movies." />
+    <meta name="twitter:image" content="/android-chrome-512x512.png" />
+
+    <!-- Prefetch / performance (optional) -->
+    <link rel="preconnect" href="https://api.themoviedb.org" crossorigin />
+    <link rel="dns-prefetch" href="https://api.themoviedb.org" />
+
+    <!-- Minimal structured data (JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Movie Reviews",
+        "url": "https://movie-review-platform-64a3.onrender.com",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://movie-review-platform-64a3.onrender.com/movies?search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+
+    <!-- Vite entry (do not change) -->
+    <script type="module" crossorigin src="/src/main.jsx"></script>
+
+    <!-- optional: keep CSS injection line if you add a global stylesheet via Vite build -->
+    <link rel="stylesheet" href="/src/index.css" />
   </head>
+
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <!-- Note: React + Vite will mount into #root via src/main.jsx -->
   </body>
 </html>

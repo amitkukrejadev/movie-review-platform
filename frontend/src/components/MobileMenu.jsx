@@ -13,12 +13,10 @@ export default function MobileMenu({ open, onClose }) {
     return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  // We keep the DOM mounted to allow CSS transitions in/out.
   return (
     <>
       {/* backdrop */}
       <div
-        // backdrop becomes visible when open, pointer-events disabled when closed
         className={`fixed inset-0 z-40 transition-opacity duration-300 ${
           open
             ? "opacity-100 pointer-events-auto"
@@ -38,7 +36,6 @@ export default function MobileMenu({ open, onClose }) {
         role="dialog"
         aria-modal="true"
         aria-label="Main menu"
-        // when closed we translate panel off-screen (right), when open translate to 0
         className={`fixed right-0 top-0 h-full w-11/12 max-w-xs bg-white z-50 shadow-xl transform transition-transform duration-300 ease-in-out ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
@@ -72,7 +69,6 @@ export default function MobileMenu({ open, onClose }) {
             </button>
           </div>
 
-          {/* nav links */}
           <nav className="flex-1 overflow-auto">
             <ul className="space-y-3 text-lg">
               <li>
@@ -151,7 +147,6 @@ export default function MobileMenu({ open, onClose }) {
             </ul>
           </nav>
 
-          {/* auth */}
           <div className="mt-4">
             <div className="space-y-2">
               <button
