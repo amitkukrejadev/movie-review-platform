@@ -1,64 +1,98 @@
 # 🎬 Movie Review Platform
 
-A full-stack movie review platform built with **React (Vite)** on the frontend and **Node.js (Express + MongoDB)** on the backend.  
-Users can browse movies, search/filter, view details, read/write reviews, and manage their watchlist.
+**Author:** [Amit Kukreja](https://www.linkedin.com/in/amitkukrejadev)  
+**Live Demo:** [movie-review-platform-64a3.onrender.com](https://movie-review-platform-64a3.onrender.com)
 
 ---
 
-## 🚀 Features
+## 📌 Overview
+A small **movie discovery & review app** built with:
 
-### Frontend (React)
-- Responsive UI with **TailwindCSS**
-- **Pages**:
-  - Home page (featured & trending movies)
-  - Movie listing with search & filters
-  - Individual movie page (details, cast, trailers, reviews)
-  - User profile page (review history & watchlist)
-  - Login & Register with authentication
-- **Components**:
-  - Movie cards, review form, review list
-  - Navbar, mobile menu, footer
-- State management via **React Context**
-- Integrated with **TMDB API** for posters and details
-- Error handling + loading states
+- **Backend:** Node.js, Express, Mongoose  
+- **Frontend:** React, Vite, Tailwind CSS  
+- **Movie Data:** TMDB API  
 
-### Backend (Node.js + Express)
-- **RESTful API**:
-  - `GET /movies` — list movies (pagination & filtering)
-  - `GET /movies/:id` — get movie details
-  - `POST /movies/:id/reviews` — add a review
-  - `GET /movies/:id/reviews` — fetch reviews
-  - `GET /users/:id` — get user profile
-  - `PUT /users/:id` — update profile
-  - `GET /users/:id/watchlist` — get watchlist
-  - `POST /users/:id/watchlist` — add movie
-  - `DELETE /users/:id/watchlist/:movieId` — remove movie
-- JWT authentication (login/register)
-- MongoDB models for **Movies, Users, Reviews**
-- Average rating calculation
-- Error handling + validation
-- TMDB API integration for trending/search
+This repository contains **both frontend and backend** in one project:
+
+- `/backend` → Node.js + Express API  
+- `/frontend` → React + Vite app (served from backend in production)
 
 ---
 
-## 🛠️ Tech Stack
-- **Frontend:** React (Vite), React Router, Context API, TailwindCSS  
-- **Backend:** Node.js, Express, Mongoose, JWT, Bcrypt  
-- **Database:** MongoDB Atlas  
-- **External API:** TMDB (The Movie Database)  
+## 🚀 Quick Start (Local Development)
 
----
+**Prerequisites:**  
+- Node.js `v18+`  
+- npm  
+- MongoDB  
 
-## ⚙️ Setup
-
-### Prerequisites
-- Node.js ≥ 18
-- MongoDB Atlas or local MongoDB
-- TMDB API key (from [themoviedb.org](https://themoviedb.org))
-
-### Install & Run
-
-Clone repo:
+### 1️⃣ Clone & Setup
 ```bash
-git clone https://github.com/amitkukrejadev/movie-review-platform.git
+# clone repo
+git clone <repo-url>
 cd movie-review-platform
+2️⃣ Backend Setup
+bash
+Copy code
+cd backend
+npm install
+
+# configure environment
+cp .env.example .env  
+# add your keys (MONGODB_URI, TMDB_KEY, JWT_SECRET, PORT)
+
+# run backend
+npm run dev
+3️⃣ Frontend Setup (separate terminal)
+bash
+Copy code
+cd ../frontend
+npm install
+npm run dev
+Frontend Env Note:
+
+Local dev defaults to http://localhost:5001
+
+In production, set VITE_API_URL=/ so the frontend uses relative API paths.
+
+☁️ Deployment (Render Notes)
+This project is deployed on Render (single web service serving backend + static frontend).
+
+Key Render Settings:
+
+Build Command:
+
+bash
+Copy code
+npm install --prefix frontend && npm run build --prefix frontend
+Start Command:
+
+bash
+Copy code
+node backend/server.js
+Environment Variables:
+MONGODB_URI, TMDB_KEY, JWT_SECRET, PORT
+(use Render secrets)
+
+Frontend: Set VITE_API_URL=/ in Render env
+
+📝 Known Issues / TODO
+🔒 Login & user management for review ownership (planned)
+
+📱 Mobile header tweaks & layout container polish (stage 3)
+
+🌐 Minor SEO & manifest improvements (done: basic meta + manifest)
+
+🔍 Smoke Tests (Deployed)
+Run these to validate deployment:
+
+bash
+Copy code
+# homepage (movies)
+curl -s 'https://movie-review-platform-64a3.onrender.com/movies?page=1&limit=1' | jq .
+
+# sample reviews
+curl -s 'https://movie-review-platform-64a3.onrender.com/movies/1078605/reviews' | jq .
+📬 Contact
+👤 Amit Kukreja
+🔗 LinkedIn @amitkukrejadev
