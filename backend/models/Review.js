@@ -6,14 +6,13 @@ const ReviewSchema = new mongoose.Schema(
     movie: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Movie",
-      required: true,
       index: true,
     },
+    movieId: { type: String, index: true }, // for TMDB ids
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // optional
     username: { type: String, default: "Guest" },
     rating: { type: Number, required: true, min: 1, max: 5 },
     comment: { type: String, required: true },
-    date: { type: String },
   },
   { timestamps: true }
 );
